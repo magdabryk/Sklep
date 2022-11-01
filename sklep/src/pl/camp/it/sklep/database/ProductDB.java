@@ -21,9 +21,7 @@ public class ProductDB {
     public boolean buyProduct(int id, int amount) {
         for (Product currentProduct : this.products) {
             if (currentProduct.getId() == id && (currentProduct.getAmount() - amount) >= 0) {
-                int newAmount = currentProduct.getAmount() - amount;
-                currentProduct.setAmount(newAmount);
-                //System.out.println("Do zapłaty " + currentProduct.getPrice() * amount);
+                currentProduct.setAmount(currentProduct.getAmount() - amount);
                 return true;
             }
         }
@@ -36,7 +34,14 @@ public class ProductDB {
             }
         }
     }
-
+ public void reffilProduct(int id, int amount) {
+     for(Product currentProduct : this.products) {
+         if(currentProduct.getId() == id && amount > 0) {
+             currentProduct.setAmount(currentProduct.getAmount() + amount);
+             System.out.println("Uzupełniono stan magazynowy");
+         }
+     }
+ }
 
 
 
