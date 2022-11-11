@@ -1,0 +1,8 @@
+Product;1;Sword;250.0;11
+Product;2;Butterfly knifes;150.5;5
+Product;3;Spear;120.0;49
+Product;4;Dagger;95.0;29
+Product;5;Bakwa Dan Do Sword;500.0;7
+User;admin;6e5c6d75e86491554530ce16141b42ee;ADMIN
+User;user;a5efb7f2d1727868be9b96957eb3bd16;USER
+User;magda;53570e0cdf05045846e96d252939d4c8;ADMIN

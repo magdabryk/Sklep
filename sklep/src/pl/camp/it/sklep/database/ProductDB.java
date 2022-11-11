@@ -1,5 +1,7 @@
 package pl.camp.it.sklep.database;
 
+import pl.camp.it.sklep.engine.Engine;
+import pl.camp.it.sklep.gui.GUI;
 import pl.camp.it.sklep.model.Product;
 
 import java.io.*;
@@ -9,18 +11,19 @@ import java.util.ArrayList;
 public class ProductDB {
 
     private final ArrayList<Product> products = new ArrayList<>();
-    private final String PRODUCT_DB_FILE = "products.txt";
 
     public ProductDB() {
 
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(PRODUCT_DB_FILE));
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(GUI.DB_FILE));
             String line;
-            while((line = reader.readLine()) != null){
+            while ((line = reader.readLine()) != null) {
                 String[] params = line.split(";");
-                this.products.add(new Product(Integer.parseInt(params[0]), params[1], Double.parseDouble(params[2]), Integer.parseInt(params[3])));
+                if (params[0].equals("Product")) {
+                    this.products.add(new Product(Integer.parseInt(params[1]), params[2], Double.parseDouble(params[3]), Integer.parseInt(params[4])));
+                }
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("bład odczytu z pliku");
         }
     }
@@ -47,35 +50,17 @@ public class ProductDB {
         }
     }
 
-    public void reffilProduct(int id, int amount){
-        if(id <= this.products.size() && id > 0 && amount > 0 ) {
+    public void reffilProduct(int id, int amount) {
+        if (id <= this.products.size() && id > 0 && amount > 0) {
             for (Product currentProduct : this.products) {
-                if (currentProduct.getId() == id ) {
+                if (currentProduct.getId() == id) {
                     currentProduct.setAmount(currentProduct.getAmount() + amount);
                     System.out.println("Uzupełniono stan magazynowy");
                 }
             }
-        } else{
+        } else {
             System.out.println("bład podczas uzupełniania magazynu");
         }
     }
-
-    public void persistToFile() {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(this.PRODUCT_DB_FILE));
-
-            writer.write(this.products.get(0).convertToData());
-            for(int i = 1; i < products.size(); i++){
-                writer.newLine();
-                writer.write(this.products.get(i).convertToData());
-            }
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("bład zapisu do pliku");
-            e.printStackTrace();
-        }
-    }
-
-
 
 }

@@ -3,14 +3,15 @@ package pl.camp.it.sklep.gui;
 import pl.camp.it.sklep.Authenticator;
 import pl.camp.it.sklep.model.Product;
 import pl.camp.it.sklep.model.User;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.util.ArrayList;
 
 
 public class GUI {
+
     public static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    public static final String DB_FILE = "db.txt";
 
     public static User readLoginAndPassword() {
         try {
@@ -29,7 +30,7 @@ public class GUI {
     public static void showMenu() {
         System.out.println("1. Lista produktów.");
         System.out.println("2. Kup podukt.");
-        if(Authenticator.loggedUser.getRole().equals(User.Role.ADMIN)) {
+        if (Authenticator.loggedUser.getRole().equals(User.Role.ADMIN)) {
             System.out.println("3. Uzupełnij magazyn.");
             System.out.println("4. Zmien uprawnienia uzytkownikow");
         }

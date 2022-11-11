@@ -61,8 +61,10 @@ public class Product {
                 .append(this.getAmount()).toString();
     }
 
-    public String convertToData(){
+    public String convertToData() {
         return new StringBuilder()
+                .append(this.getClass().getSimpleName())
+                .append(";")
                 .append(this.id)
                 .append(";")
                 .append(this.name)

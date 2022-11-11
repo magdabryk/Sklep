@@ -5,8 +5,9 @@ import pl.camp.it.sklep.database.ProductDB;
 import pl.camp.it.sklep.database.UserDB;
 import pl.camp.it.sklep.gui.GUI;
 import pl.camp.it.sklep.model.User;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
-
 
 
 public class Engine {
@@ -15,6 +16,7 @@ public class Engine {
 
         final ProductDB productDB = new ProductDB();
         final UserDB userDB = new UserDB();
+
         GUI.loginOrRegister();
         switch (GUI.reader.readLine()) {
             case "1":
@@ -35,7 +37,6 @@ public class Engine {
                     userDB.addUser(newLogin, newPassword);
                     System.out.println("Użytkownik dodany prawidłowo.");
                     loginUser(userDB, productDB);
-
                 }
                 break;
             default:
@@ -66,8 +67,24 @@ public class Engine {
                 case "5":
                     isWorking = false;
                     GUI.reader.close();
-                    productDB.persistToFile();
-                    userDB.presistToFile();
+
+                    try {
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(GUI.DB_FILE));
+                        writer.write(productDB.getProducts().get(0).convertToData());
+                        for (int i = 1; i < productDB.getProducts().size(); i++) {
+                            writer.newLine();
+                            writer.write(productDB.getProducts().get(i).convertToData());
+                        }
+                        for (User user : userDB.getUsers()) {
+                            writer.newLine();
+                            writer.append(user.convertToData());
+                        }
+
+                        writer.close();
+                    } catch (IOException e) {
+                        System.out.println("bład zapisu do pliku");
+                        e.printStackTrace();
+                    }
                     break;
 
                 case "3":
@@ -112,16 +129,13 @@ public class Engine {
                             }
                         }
                         break;
-
                     }
-                            default:
-                                System.out.println("Nie ma takej pozycji w menu. Wybierz jeszcze raz.");
-                                break;
-
-
-                    }
+                default:
+                    System.out.println("Nie ma takej pozycji w menu. Wybierz jeszcze raz.");
+                    break;
             }
         }
     }
+}
 
 
