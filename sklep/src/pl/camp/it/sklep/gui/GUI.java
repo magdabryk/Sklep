@@ -31,8 +31,9 @@ public class GUI {
         System.out.println("2. Kup podukt.");
         if(Authenticator.loggedUser.getRole().equals(User.Role.ADMIN)) {
             System.out.println("3. Uzupełnij magazyn.");
+            System.out.println("4. Zmien uprawnienia uzytkownikow");
         }
-        System.out.println("4. Wyjscie.");
+        System.out.println("5. Wyjscie.");
     }
 
     public static void poductList(ArrayList<Product> products) {
