@@ -2,9 +2,7 @@ package pl.camp.it.sklep.database;
 
 import pl.camp.it.sklep.model.Product;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 
@@ -14,12 +12,17 @@ public class ProductDB {
     private final String PRODUCT_DB_FILE = "products.txt";
 
     public ProductDB() {
-        products.add(new Product(1, "Sword", 250.00, 10));
-        products.add(new Product(2, "Butterfly knifes", 150.50, 5));
-        products.add(new Product(3, "Spear", 120.00, 50));
-        products.add(new Product(4, "Dagger", 95.00, 9));
-        products.add(new Product(5, "Bakwa Dan Do Sword", 500.00, 3));
 
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader(PRODUCT_DB_FILE));
+            String line;
+            while((line = reader.readLine()) != null){
+                String[] params = line.split(";");
+                this.products.add(new Product(Integer.parseInt(params[0]), params[1], Double.parseDouble(params[2]), Integer.parseInt(params[3])));
+            }
+        }catch (IOException e){
+            System.out.println("bład odczytu z pliku");
+        }
     }
 
     public ArrayList<Product> getProducts() {
@@ -56,8 +59,8 @@ public class ProductDB {
     public void persistToFile() {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(this.PRODUCT_DB_FILE));
-            writer.write("abc");
-            //writer.write(this.products.get(0).convertToData());
+
+            writer.write(this.products.get(0).convertToData());
             for(int i = 1; i < products.size(); i++){
                 writer.newLine();
                 writer.write(this.products.get(i).convertToData());
@@ -68,7 +71,6 @@ public class ProductDB {
             e.printStackTrace();
         }
     }
-
 
 
 

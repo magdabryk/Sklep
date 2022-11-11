@@ -41,6 +41,7 @@ public class Engine {
                     isWorking = false;
                     GUI.reader.close();
                     productDB.persistToFile();
+                    userDB.presistToFile();
                     break;
 
                 case "3":
