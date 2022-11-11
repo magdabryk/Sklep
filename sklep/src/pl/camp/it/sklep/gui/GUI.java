@@ -14,6 +14,7 @@ public class GUI {
 
     public static User readLoginAndPassword() {
         try {
+            System.out.println("Zaloguj się");
             System.out.println("Login:");
             String login = reader.readLine();
             System.out.println("Hasło");
@@ -38,5 +39,10 @@ public class GUI {
         for (Product currentProduct : products) {
             System.out.println(currentProduct);
         }
+    }
+
+    public static void loginOrRegister() {
+        System.out.println("1. Zaloguj");
+        System.out.println("2. Zarejestruj");
     }
 }

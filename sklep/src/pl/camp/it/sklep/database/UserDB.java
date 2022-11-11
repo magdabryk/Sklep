@@ -1,5 +1,7 @@
 package pl.camp.it.sklep.database;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import pl.camp.it.sklep.Authenticator;
 import pl.camp.it.sklep.model.User;
 
 import java.io.*;
@@ -32,9 +34,15 @@ public class UserDB {
         return new ArrayList<>(users.values());
     }
 
+
+    public boolean isLogin(String newLogin) {
+        return users.containsKey(newLogin);
+    }
+
     public User findUserByLogin(String login) {
         return this.users.get(login);
     }
+
 
     public void presistToFile() {
         try {
@@ -53,9 +61,12 @@ public class UserDB {
             System.out.println("bład podczas zapisu");
             e.printStackTrace();
         }
-
     }
-}
+        public void addUser(String newLogin, String newPassword) {
+            this.users.put(newLogin, new User(newLogin , DigestUtils.md5Hex(newPassword + Authenticator.seed), User.Role.USER));
+        }
+    }
+
 
 
 

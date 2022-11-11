@@ -47,12 +47,16 @@ public class ProductDB {
         }
     }
 
-    public void reffilProduct(int id, int amount) {
-        for (Product currentProduct : this.products) {
-            if (currentProduct.getId() == id && amount > 0) {
-                currentProduct.setAmount(currentProduct.getAmount() + amount);
-                System.out.println("Uzupełniono stan magazynowy");
+    public void reffilProduct(int id, int amount){
+        if(id <= this.products.size() && id > 0 && amount > 0 ) {
+            for (Product currentProduct : this.products) {
+                if (currentProduct.getId() == id ) {
+                    currentProduct.setAmount(currentProduct.getAmount() + amount);
+                    System.out.println("Uzupełniono stan magazynowy");
+                }
             }
+        } else{
+            System.out.println("bład podczas uzupełniania magazynu");
         }
     }
 
