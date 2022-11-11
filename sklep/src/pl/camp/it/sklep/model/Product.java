@@ -60,4 +60,17 @@ public class Product {
                 .append(" Ilość: ")
                 .append(this.getAmount()).toString();
     }
+
+    public String convertToData(){
+        return new StringBuilder()
+                .append(this.id)
+                .append(";")
+                .append(this.name)
+                .append(";")
+                .append(this.price)
+                .append(";")
+                .append(this.amount)
+                .toString();
+
+    }
 }

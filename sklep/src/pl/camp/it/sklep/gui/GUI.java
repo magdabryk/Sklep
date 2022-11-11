@@ -1,21 +1,28 @@
 package pl.camp.it.sklep.gui;
 
 import pl.camp.it.sklep.Authenticator;
-import pl.camp.it.sklep.database.ProductDB;
 import pl.camp.it.sklep.model.Product;
 import pl.camp.it.sklep.model.User;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
-import java.util.Scanner;
 
 public class GUI {
+    public static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static User readLoginAndPassword() {
-        final Scanner scanner = new Scanner(System.in);
-        System.out.println("Login:");
-        String login = scanner.nextLine();
-        System.out.println("Hasło");
-        String password = scanner.nextLine();
-        return new User(login, password);
+        try {
+            System.out.println("Login:");
+            String login = reader.readLine();
+            System.out.println("Hasło");
+            String password = reader.readLine();
+            return new User(login, password);
+        } catch (IOException e) {
+            System.out.println("problem z wczytywaniem danych z terminala");
+        }
+        return null;
     }
 
     public static void showMenu() {
@@ -27,7 +34,7 @@ public class GUI {
         System.out.println("4. Wyjscie.");
     }
 
-    public static void poductList(Product[] products) {
+    public static void poductList(ArrayList<Product> products) {
         for (Product currentProduct : products) {
             System.out.println(currentProduct);
         }

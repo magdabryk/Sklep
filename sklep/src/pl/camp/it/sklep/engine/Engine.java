@@ -5,30 +5,31 @@ import pl.camp.it.sklep.database.ProductDB;
 import pl.camp.it.sklep.database.UserDB;
 import pl.camp.it.sklep.gui.GUI;
 import pl.camp.it.sklep.model.User;
-import java.util.Scanner;
+import java.io.IOException;
+
 
 
 public class Engine {
 
-    public static void start() {
+    public static void start() throws IOException{
 
 
         final ProductDB productDB = new ProductDB();
         final UserDB userDB = new UserDB();
-        final Scanner scanner = new Scanner(System.in);
+
         boolean isWorking = Authenticator.authenticate(userDB);
 
         while (isWorking) {
             GUI.showMenu();
-            switch (scanner.nextLine()) {
+            switch (GUI.reader.readLine()) {
                 case "1":
                     GUI.poductList(productDB.getProducts());
                     break;
                 case "2":
                     System.out.println("Wpisz ID produktu: ");
-                    int buyId = Integer.parseInt(scanner.nextLine());
+                    int buyId = Integer.parseInt(GUI.reader.readLine());
                     System.out.println("Wpisz ilość produktu któy chcesz kupić: ");
-                    int buyAmount = Integer.parseInt(scanner.nextLine());
+                    int buyAmount = Integer.parseInt(GUI.reader.readLine());
                     if (productDB.buyProduct(buyId, buyAmount)) {
                         productDB.payProduct(buyId, buyAmount);
                     } else {
@@ -38,14 +39,16 @@ public class Engine {
 
                 case "4":
                     isWorking = false;
+                    GUI.reader.close();
+                    productDB.persistToFile();
                     break;
 
                 case "3":
                     if (Authenticator.loggedUser.getRole().equals(User.Role.ADMIN)) {
                         System.out.println("Wpisz ID produktu którego stan magazynowy chcesz uzupełnić: ");
-                        int refillId = Integer.parseInt(scanner.nextLine());
+                        int refillId = Integer.parseInt(GUI.reader.readLine());
                         System.out.println("Wpisz ilość produktu w dostawie: ");
-                        int refillAmount = Integer.parseInt(scanner.nextLine());
+                        int refillAmount = Integer.parseInt(GUI.reader.readLine());
                         productDB.reffilProduct(refillId, refillAmount);
                         break;
                     }

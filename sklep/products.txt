@@ -1,0 +1,5 @@
+abc
+2;Butterfly knifes;150.5;5
+3;Spear;120.0;50
+4;Dagger;95.0;9
+5;Bakwa Dan Do Sword;500.0;3
