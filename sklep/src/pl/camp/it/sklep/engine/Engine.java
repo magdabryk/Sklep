@@ -5,6 +5,7 @@ import pl.camp.it.sklep.database.ProductDB;
 import pl.camp.it.sklep.database.UserDB;
 import pl.camp.it.sklep.gui.GUI;
 import pl.camp.it.sklep.model.User;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,31 +17,37 @@ public class Engine {
 
         final ProductDB productDB = new ProductDB();
         final UserDB userDB = new UserDB();
+        boolean isWorking1 = true;
 
-        GUI.loginOrRegister();
-        switch (GUI.reader.readLine()) {
-            case "1":
-                loginUser(userDB, productDB);
-                break;
-            case "2":
-                boolean ifAgain = true;
-                String newLogin;
+        while (isWorking1) {
 
-                while (ifAgain) {
-                    System.out.println("Podaj login:");
-                    newLogin = GUI.reader.readLine();
-                    if (ifAgain = userDB.isLogin(newLogin)) {
-                        continue;
-                    }
-                    System.out.println("Podaj hasło:");
-                    String newPassword = GUI.reader.readLine();
-                    userDB.addUser(newLogin, newPassword);
-                    System.out.println("Użytkownik dodany prawidłowo.");
+            GUI.loginOrRegister();
+            switch (GUI.reader.readLine()) {
+                case "1":
                     loginUser(userDB, productDB);
-                }
-                break;
-            default:
-                System.out.println("Nie ma takej pozycji w menu. Wybierz jeszcze raz.");
+                    isWorking1 = false;
+                    break;
+
+                case "2":
+                    boolean ifAgain = true;
+                    String newLogin;
+
+                    while (ifAgain) {
+                        System.out.println("Podaj login:");
+                        newLogin = GUI.reader.readLine();
+                        if (ifAgain = userDB.isLogin(newLogin)) {
+                            continue;
+                        }
+                        System.out.println("Podaj hasło:");
+                        String newPassword = GUI.reader.readLine();
+                        userDB.addUser(newLogin, newPassword);
+                        System.out.println("Użytkownik dodany prawidłowo.");
+                        loginUser(userDB, productDB);
+                    }
+                    break;
+                default:
+                    System.out.println("Nie ma takej pozycji w menu. Wybierz jeszcze raz.");
+            }
         }
     }
 
@@ -102,31 +109,35 @@ public class Engine {
                         userDB.listUser();
                         System.out.println("Wpisz nazwę użytkownika którego uprawnienia chcesz zmienić");
                         String currentLogin = GUI.reader.readLine();
-                        User.Role rola = userDB.whichRole(currentLogin);
-                        if (rola.equals(User.Role.ADMIN)) {
-                            System.out.println("Użytkownik ma status ADMIN czy chcesz zmienic uprawnienia na USER (t/n)");
-                            switch (GUI.reader.readLine()) {
-                                case "t":
-                                    userDB.changeRole(currentLogin);
-                                    break;
-                                case "n":
-                                    break;
-                                default:
-                                    System.out.println("błedny wybór");
-                                    break;
+                        try {
+                            User.Role rola = userDB.whichRole(currentLogin);
+                            if (rola.equals(User.Role.ADMIN)) {
+                                System.out.println("Użytkownik ma status ADMIN czy chcesz zmienic uprawnienia na USER (t/n)");
+                                switch (GUI.reader.readLine()) {
+                                    case "t":
+                                        userDB.changeRole(currentLogin);
+                                        break;
+                                    case "n":
+                                        break;
+                                    default:
+                                        System.out.println("błedny wybór");
+                                        break;
+                                }
+                            } else if (rola.equals(User.Role.USER)) {
+                                System.out.println("Użytkownik ma status USER czy chcesz zmienic uprawnienia na ADMIN (t/n)");
+                                switch (GUI.reader.readLine()) {
+                                    case "t":
+                                        userDB.changeRole(currentLogin);
+                                        break;
+                                    case "n":
+                                        break;
+                                    default:
+                                        System.out.println("błedny wybór");
+                                        break;
+                                }
                             }
-                        } else if (rola.equals(User.Role.USER)) {
-                            System.out.println("Użytkownik ma status USER czy chcesz zmienic uprawnienia na ADMIN (t/n)");
-                            switch (GUI.reader.readLine()) {
-                                case "t":
-                                    userDB.changeRole(currentLogin);
-                                    break;
-                                case "n":
-                                    break;
-                                default:
-                                    System.out.println("błedny wybór");
-                                    break;
-                            }
+                        } catch (NullPointerException e) {
+                            System.out.println("błedny login");
                         }
                         break;
                     }

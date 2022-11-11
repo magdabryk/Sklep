@@ -54,12 +54,12 @@ public class UserDB {
     }
 
     public User.Role whichRole(String login) {
-        for (User currentUser : this.users.values()) {
-            if (currentUser.getLogin().equals(login) && login != null) {
-                return currentUser.getRole();
+                for (User currentUser : this.users.values()) {
+                if (currentUser.getLogin().equals(login) && login != null) {
+                    return currentUser.getRole();
+                }
             }
-        }
-        return null;
+            return null;
     }
 
     public void changeRole(String login) {
